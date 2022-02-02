@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/bg_bottom_navigation.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/bg_dialog_loading.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/bg_edittext.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/bg_textview_frosted_shadow.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/bg_textview_shadow.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_delete.xml" value="0.3515" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_edit.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_signout.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/drawable/selector_item_bottom_navigation.xml" value="0.3365740740740741" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout-h480dp/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout-large/activity_main.xml" value="0.271875" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout-normal/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.271875" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/activity_location_sharing.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/activity_login_email.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/activity_sign_up.xml" value="0.3625" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/dialog_change_password.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/dialog_edit_shared_location.xml" value="0.2975630611372381" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/dialog_loading.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/dialog_login.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/fragment_edit_user.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/fragment_login.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/fragment_map.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/fragment_share.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/fragment_user.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/fragment_view_shared_location.xml" value="0.5" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/info_window_custom.xml" value="0.22894736842105262" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_recent_shared.xml" value="0.5" />
+        <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/menu/bottom_nav_menu.xml" value="0.32222222222222224" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.32222222222222224" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

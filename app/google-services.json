@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "42970956402",
+    "project_id": "location-sharing-13bf3",
+    "storage_bucket": "location-sharing-13bf3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42970956402:android:6a90ea0d779b5922b438eb",
+        "android_client_info": {
+          "package_name": "com.example.locationsharing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42970956402-hlkugoueonfulsccna5l5st1dojk01oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtbTLGfPIDbKrkoYZt6nTgD828lsOAJug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42970956402-hlkugoueonfulsccna5l5st1dojk01oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

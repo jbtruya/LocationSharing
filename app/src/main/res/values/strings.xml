@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">LocationSharing</string>
+    <string name="login_screen_illustration">login screen illustration</string>
+    <string name="location_sharing">Location Sharing</string>
+    <string name="welcome">Welcome!</string>
+    <string name="login_or_signup_below">Login or signup below</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="adv104">adv104</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="firstname">First Name</string>
+    <string name="tap">Tap</string>
+    <string name="type_in_your_last_name">Type in your last name</string>
+    <string name="last_name">Last Name</string>
+    <string name="type_in_your_first_name">Type in your first name</string>
+    <string name="email">Email</string>
+    <string name="type_in_your_email">Type in your email</string>
+    <string name="password">Password</string>
+    <string name="type_in_your_password">Type in your password</string>
+    <string name="confirm">confirm</string>
+    <string name="confirm_your_password">Confirm your password</string>
+    <string name="hello_there_login_to_continue">Hello there, login to continue</string>
+    <string name="map">Map</string>
+    <string name="share">Share</string>
+    <string name="user">User</string>
+    <string name="profile">Profile</string>
+    <string name="person_name">Person Name</string>
+    <string name="share_current_location">Share Current location</string>
+    <string name="title">Title</string>
+    <string name="type_in_your_title">Type in your title.</string>
+    <string name="description">Description</string>
+    <string name="string_description" />
+    <string name="type_in_your_description">Type in your description.</string>
+    <string name="share_location">Share Location</string>
+    <string name="tap_to_add_image">Tap to add image</string>
+    <string name="edit_user_information">Edit User Information</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="update">Update</string>
+    <string name="change_password">Change Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="todo">TODO</string>
+    <string name="date">Date</string>
+    <string name="coordinates">Coordinates</string>
+</resources>
