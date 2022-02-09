@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -261,8 +262,22 @@ public class ViewSharedLocationFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mCommentsRecyclerAdapter = new CommentsRecyclerAdapter(getContext(),mCommentArrayList);
+        mCommentsRecyclerAdapter = new CommentsRecyclerAdapter(getContext(),mCommentArrayList, mUser);
         mRecyclerView.setAdapter(mCommentsRecyclerAdapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+               mCommentsRecyclerAdapter.deleteItem(viewHolder.getAdapterPosition());
+                getSharedLocationComments();
+            }
+        }).attachToRecyclerView(mRecyclerView);
     }
     private void getSharedLocationComments(){
         db.collection("Comment Information")
@@ -292,11 +307,10 @@ public class ViewSharedLocationFragment extends Fragment {
                         for(DocumentChange dc : value.getDocumentChanges()){
                             switch (dc.getType()){
                                 case ADDED:
+                                case MODIFIED:
                                     getSharedLocationComments();
                                     break;
                                 case REMOVED:
-                                    break;
-                                case MODIFIED:
                                     break;
                             }
                         }
