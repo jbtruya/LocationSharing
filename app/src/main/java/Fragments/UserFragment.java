@@ -61,8 +61,6 @@ public class UserFragment extends Fragment {
     private RecyclerView mRecycler_recentShares;
     private RecentSharedLocationRecyclerAdapter mRecyclerRecentSharesAdapter;
 
-    private ScrollView scrollView_User;
-
     private User mUser;
 
     private ArrayList<Sharedlocation> mSharedLocationArr;
@@ -116,8 +114,6 @@ public class UserFragment extends Fragment {
         image_btn_signout = mView.findViewById(R.id.image_btn_signout);
         image_btn_edit = mView.findViewById(R.id.image_btn_user_edit);
 
-        scrollView_User = mView.findViewById(R.id.scrollView_User);
-
         mRecycler_recentShares = mView.findViewById(R.id.recycler_recentShares);
         initializeRecycler();
     }
@@ -128,23 +124,6 @@ public class UserFragment extends Fragment {
         mRecyclerRecentSharesAdapter = new RecentSharedLocationRecyclerAdapter(getContext(),mSharedLocationArr);
         mRecycler_recentShares.setAdapter(mRecyclerRecentSharesAdapter);
 
-        mRecycler_recentShares.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            BottomNavigationView navBar = getActivity().findViewById(R.id.bottomNavView);
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0 && navBar.isShown()){
-                    navBar.setVisibility(View.GONE);
-                }else if(dy < 0){
-                    navBar.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
         mRecyclerRecentSharesAdapter.setOnItemClickListener(new RecentSharedLocationRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

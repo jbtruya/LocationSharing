@@ -1,4 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -35,19 +36,23 @@
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/dark_button"
             android:text="@string/login"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_icon_login"
+            app:iconPadding="-30dp"
             tools:ignore="TextContrastCheck" />
 
         <Button
             android:id="@+id/btn_signup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:backgroundTint="@color/dark_button_background"
-            android:text="@string/sign_up" />
+            android:text="@string/sign_up"
+            app:icon="@drawable/ic_icon_registration"
+            app:iconPadding="-25dp" />
 
         <TextView
             android:id="@+id/login_text_4"
