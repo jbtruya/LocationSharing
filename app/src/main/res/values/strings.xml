@@ -42,4 +42,6 @@
     <string name="todo">TODO</string>
     <string name="date">Date</string>
     <string name="coordinates">Coordinates</string>
+    <string name="comment">Comment</string>
+    <string name="add_a_comment">Add a comment</string>
 </resources>

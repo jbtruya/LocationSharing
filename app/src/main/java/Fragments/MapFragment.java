@@ -235,6 +235,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 Fragment mFragment = null;
                 Bundle mBundle = new Bundle();
                 mBundle.putParcelable("Shared Location", sharedlocation);
+                mBundle.putParcelable("mUser", mUser);
                 mFragment = new ViewSharedLocationFragment();
                 mFragment.setArguments(mBundle);
                 getActivity()

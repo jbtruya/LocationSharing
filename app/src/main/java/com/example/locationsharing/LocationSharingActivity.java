@@ -26,6 +26,7 @@ public class LocationSharingActivity extends AppCompatActivity {
         initializeBindViews();
         // Bottom Navigation Bar Functions
         bottomNavFunctions();
+
     }
     private void initializeBindViews(){
         mBottomNav = findViewById(R.id.bottomNavView);

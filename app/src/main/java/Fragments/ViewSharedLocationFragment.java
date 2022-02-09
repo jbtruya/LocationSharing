@@ -8,25 +8,42 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.locationsharing.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,10 +51,15 @@ import com.google.firebase.storage.UploadTask;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import Adapters.CommentsRecyclerAdapter;
+import Adapters.RecentSharedLocationRecyclerAdapter;
+import Models.Comment;
 import Models.Sharedlocation;
+import Models.User;
 
 
 public class ViewSharedLocationFragment extends Fragment {
@@ -47,9 +69,14 @@ public class ViewSharedLocationFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseStorage mStorage;
     private StorageReference mStorageReference;
-    private Sharedlocation mSharedLocation;
     private Dialog mDialog;
     private Dialog mLoadingDialog;
+
+    private CommentsRecyclerAdapter mCommentsRecyclerAdapter;
+    private Sharedlocation mSharedLocation;
+    private ArrayList<Comment> mCommentArrayList;
+    private User mUser;
+    private Comment mComment;
 
     private ActivityResultLauncher<String> mActivityResultLauncher;
 
@@ -60,9 +87,13 @@ public class ViewSharedLocationFragment extends Fragment {
     private TextView text_title;
     private TextView text_description;
 
+    private TextInputLayout input_comment;
+    private RecyclerView mRecyclerView;
+
     private ImageView image_shared_photo;
     private ImageView image_avatar;
     private ImageView image_edit;
+    private ImageView image_comment_avatar;
 
     private Uri dialogUri;
     private String dialogTitle;
@@ -92,24 +123,28 @@ public class ViewSharedLocationFragment extends Fragment {
         // Initialize Bind Views
         initializeBindViews();
         // Populate Views With Data
+
         Bundle bundle = getArguments();
         if(bundle != null){
             mSharedLocation = bundle.getParcelable("Shared Location");
+            mUser = bundle.getParcelable("mUser");
             populateViewsWithData();
         }else{
             Toast.makeText(getContext(), "INA MO", Toast.LENGTH_SHORT).show();
         }
+        // Get Comments
+        getSharedLocationComments();
+
         // initialize Dialog
         initializeDialog();
-
-
-
-
-
 
         // image_edit function
         imageEditFunction();
 
+
+        // Initialize Recycler
+        initializeRecycler();
+        checkForNewComments();
         return mView;
     }
     private void initializeVariables(){
@@ -123,6 +158,8 @@ public class ViewSharedLocationFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
         mStorageReference = FirebaseStorage.getInstance().getReference();
+
+        mCommentArrayList = new ArrayList<>();
     }
     private void initializeDialog(){
         mLoadingDialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_dialog_loading);
@@ -208,7 +245,79 @@ public class ViewSharedLocationFragment extends Fragment {
         image_shared_photo = mView.findViewById(R.id.view_shared_image);
         image_avatar = mView.findViewById(R.id.view_shared_avatar);
         image_edit = mView.findViewById(R.id.view_shared_edit);
+        image_comment_avatar = mView.findViewById(R.id.view_shared_comment_avatar);
 
+        mRecyclerView = mView.findViewById(R.id.view_shared_recyclerView);
+
+        input_comment = mView.findViewById(R.id.view_shared_textField_comment);
+        input_comment.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createCommentDocument(input_comment.getEditText().getText().toString());
+            }
+        });
+    }
+    private void initializeRecycler(){
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mCommentsRecyclerAdapter = new CommentsRecyclerAdapter(getContext(),mCommentArrayList);
+        mRecyclerView.setAdapter(mCommentsRecyclerAdapter);
+    }
+    private void getSharedLocationComments(){
+        db.collection("Comment Information")
+                .whereEqualTo("sharedLocation.documentId", mSharedLocation.getDocumentId())
+                .orderBy("timeStamp", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            mCommentArrayList.clear();
+                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                mCommentArrayList.add(documentSnapshot.toObject(Comment.class));
+                            }
+                            mCommentsRecyclerAdapter.notifyDataSetChanged();
+                        }else{
+                        }
+                    }
+                });
+    }
+    private void checkForNewComments(){
+        db.collection("Comment Information")
+                .whereEqualTo("sharedLocation.documentId", mSharedLocation.getDocumentId())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        for(DocumentChange dc : value.getDocumentChanges()){
+                            switch (dc.getType()){
+                                case ADDED:
+                                    getSharedLocationComments();
+                                    break;
+                                case REMOVED:
+                                    break;
+                                case MODIFIED:
+                                    break;
+                            }
+                        }
+                    }
+                });
+    }
+    private void createCommentDocument(String comment){
+        DocumentReference documentReference = db.collection("Comment Information").document();
+        mComment = new Comment();
+        mComment.setCommentDocId(documentReference.getId());
+        mComment.setSharedLocation(mSharedLocation);
+        mComment.setUser(mUser);
+        mComment.setComment(comment);
+
+        documentReference.set(mComment)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getContext(), "Comment added!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
     private void populateViewsWithData(){
@@ -220,6 +329,11 @@ public class ViewSharedLocationFragment extends Fragment {
         if(mSharedLocation.getUser().getAvatar() != null) {
             if (getActivity() != null) {
                 Glide.with(getContext()).load(mSharedLocation.getUser().getAvatar()).into(image_avatar);
+            }
+        }
+        if(mUser.getAvatar() != null) {
+            if (getActivity() != null) {
+                Glide.with(getContext()).load(mUser.getAvatar()).into(image_comment_avatar);
             }
         }
 
