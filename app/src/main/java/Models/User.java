@@ -9,6 +9,7 @@ public class User implements Parcelable {
     private String lastname;
     private String email;
     private String avatar;
+    private String fcmToken;
 
     public User() {
     }
@@ -27,6 +28,7 @@ public class User implements Parcelable {
         lastname = in.readString();
         email = in.readString();
         avatar = in.readString();
+        fcmToken = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -81,17 +83,26 @@ public class User implements Parcelable {
         this.avatar = avatar;
     }
 
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(uid);
-        dest.writeString(firstname);
-        dest.writeString(lastname);
-        dest.writeString(email);
-        dest.writeString(avatar);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(uid);
+        parcel.writeString(firstname);
+        parcel.writeString(lastname);
+        parcel.writeString(email);
+        parcel.writeString(avatar);
+        parcel.writeString(fcmToken);
     }
 }

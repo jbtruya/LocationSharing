@@ -198,12 +198,14 @@ public class ShareFragment extends Fragment {
                     uploadPhotoToFireStorage(location, title, description);
                 }else{
                     DocumentReference documentReference = db.collection("Shared Location").document();
+                    Date currentTime = Calendar.getInstance().getTime();
 
                     GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
                     mSharedLocation.setGeoPoint(geoPoint);
                     mSharedLocation.setUser(mUser);
                     mSharedLocation.setLocationTitle(title);
                     mSharedLocation.setLocationDescription(description);
+                    mSharedLocation.setDate(currentTime);
                     mSharedLocation.setDocumentId(documentReference.getId());
 
                     documentReference.set(mSharedLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -243,10 +245,12 @@ public class ShareFragment extends Fragment {
                             public void onSuccess(Uri uri) {
                                 DocumentReference documentReference = db.collection("Shared Location").document();
                                 GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                                Date currentTime = Calendar.getInstance().getTime();
 
                                 mSharedLocation.setGeoPoint(geoPoint);
                                 mSharedLocation.setLocationPhoto(uri.toString());
                                 mSharedLocation.setUser(mUser);
+                                mSharedLocation.setDate(currentTime);
                                 mSharedLocation.setLocationTitle(title);
                                 mSharedLocation.setLocationDescription(description);
                                 mSharedLocation.setDocumentId(documentReference.getId());

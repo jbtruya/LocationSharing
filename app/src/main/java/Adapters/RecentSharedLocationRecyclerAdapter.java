@@ -49,7 +49,7 @@ public class RecentSharedLocationRecyclerAdapter extends RecyclerView.Adapter<Re
     public void onBindViewHolder(@NonNull RecentSharedLocationRecyclerAdapter.MyViewHolder holder, int position) {
         Sharedlocation sharedlocation =mSharedLocation.get(position);
 
-        Long timeStamp = sharedlocation.getTimeStamp().getTime();
+        Long timeStamp = sharedlocation.getDate().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String convertedDate = simpleDateFormat.format(new Date(timeStamp));
 

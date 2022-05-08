@@ -16,7 +16,19 @@ public class Sharedlocation implements Parcelable {
     private String locationDescription;
     private String locationPhoto;
     private GeoPoint geoPoint;
-    private @ServerTimestamp Date timeStamp;
+    private Date date;
+
+
+    public Sharedlocation() {
+    }
+
+    protected Sharedlocation(Parcel in) {
+        documentId = in.readString();
+        user = in.readParcelable(User.class.getClassLoader());
+        locationTitle = in.readString();
+        locationDescription = in.readString();
+        locationPhoto = in.readString();
+    }
 
     public static final Creator<Sharedlocation> CREATOR = new Creator<Sharedlocation>() {
         @Override
@@ -29,39 +41,6 @@ public class Sharedlocation implements Parcelable {
             return new Sharedlocation[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(user, flags);
-        dest.writeString(locationTitle);
-        dest.writeString(locationDescription);
-        dest.writeString(locationPhoto);
-    }
-
-    public Sharedlocation() {
-    }
-
-    public Sharedlocation(String documentId, User user, String locationTitle, String locationDescription, String locationPhoto, GeoPoint geoPoint, Date timeStamp) {
-        this.documentId = documentId;
-        this.user = user;
-        this.locationTitle = locationTitle;
-        this.locationDescription = locationDescription;
-        this.locationPhoto = locationPhoto;
-        this.geoPoint = geoPoint;
-        this.timeStamp = timeStamp;
-    }
-
-    protected Sharedlocation(Parcel in) {
-        user = in.readParcelable(User.class.getClassLoader());
-        locationTitle = in.readString();
-        locationDescription = in.readString();
-        locationPhoto = in.readString();
-    }
 
     public String getDocumentId() {
         return documentId;
@@ -111,12 +90,25 @@ public class Sharedlocation implements Parcelable {
         this.geoPoint = geoPoint;
     }
 
-    public Date getTimeStamp() {
-        return timeStamp;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(documentId);
+        parcel.writeParcelable(user, i);
+        parcel.writeString(locationTitle);
+        parcel.writeString(locationDescription);
+        parcel.writeString(locationPhoto);
+    }
 }

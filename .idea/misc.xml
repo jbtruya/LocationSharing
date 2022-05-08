@@ -34,6 +34,16 @@
         <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_comments.xml" value="0.75" />
         <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_recent_shared.xml" value="0.5" />
         <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/menu/bottom_nav_menu.xml" value="0.32222222222222224" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_map.xml" value="0.3175" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_registration.xml" value="0.3175" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/activity_location_sharing.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_notification.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_share.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_user.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_view_shared_location.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_notifications.xml" value="0.6886005560704356" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_recent_shared.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3625" />
       </map>
     </option>
   </component>

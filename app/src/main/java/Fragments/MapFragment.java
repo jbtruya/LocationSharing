@@ -138,6 +138,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                             Log.w(TAG, "Listen failed.", error);
                             return;
                         }
+                        Log.d("SHAREDLOCATIONS", "Size"+value.size());
                         ArrayList<Sharedlocation> sharedLocationArrayListArrayList = new ArrayList<>();
                         mGlobalSharedLocationArrayList = new ArrayList<>();
                         for(QueryDocumentSnapshot doc : value){
@@ -234,6 +235,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
                 Fragment mFragment = null;
                 Bundle mBundle = new Bundle();
+                mBundle.putString("dataFrom", "Map");
                 mBundle.putParcelable("Shared Location", sharedlocation);
                 mBundle.putParcelable("mUser", mUser);
                 mFragment = new ViewSharedLocationFragment();

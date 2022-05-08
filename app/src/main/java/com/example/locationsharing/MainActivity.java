@@ -1,10 +1,12 @@
 package com.example.locationsharing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,8 +16,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -24,10 +30,13 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import Fragments.LoginFragment;
+import Models.Sharedlocation;
+import Models.User;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     private boolean isPermissionGranted;
 
@@ -66,8 +75,20 @@ public class MainActivity extends AppCompatActivity {
             if(checkGooglePlayServices()){
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if(currentUser != null) {
-                    loadLocationSharingActivity();
-                    Toast.makeText(MainActivity.this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+                    Bundle bundle = getIntent().getExtras();
+                    if(bundle != null){
+                        String dataFrom = bundle.getString("dataFrom");
+                        if(dataFrom == null){
+                            return;
+                        }
+                        switch (dataFrom){
+                            case "NewComment":
+                                FcmNotificationGetSharedLocationData(bundle.getString("documentId"));
+                                break;
+                        }
+                    }else{
+                        loadLocationSharingActivity();
+                    }
                 }
             }else{
 
@@ -75,6 +96,48 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+    private void FcmNotificationGetSharedLocationData(String documentId){
+        db = FirebaseFirestore.getInstance();
+        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+
+        progressDialog.setTitle("Loading Please Wait.");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        db.collection("Shared Location").document(documentId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Sharedlocation sharedlocation = task.getResult().toObject(Sharedlocation.class);
+
+                            db.collection("User Information").document(mAuth.getCurrentUser().getUid())
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()){
+                                                User mUser  = task.getResult().toObject(User.class);
+
+                                                Intent mIntent = new Intent(MainActivity.this, LocationSharingActivity.class);
+                                                mIntent.putExtra("dataFrom", "NewComment");
+                                                mIntent.putExtra("Shared Location", sharedlocation);
+                                                mIntent.putExtra("mUser", mUser);
+
+                                                progressDialog.dismiss();
+
+                                                finishAffinity();
+                                                startActivity(mIntent);
+                                                finish();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
     private void checkPermission(){
         Dexter.withContext(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {

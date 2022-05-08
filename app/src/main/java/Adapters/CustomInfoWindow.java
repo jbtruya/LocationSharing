@@ -90,7 +90,7 @@ public class CustomInfoWindow implements GoogleMap.InfoWindowAdapter{
         text_description.setText(mSharedLocation.getLocationDescription());
         text_name.setText("by: "+mSharedLocation.getUser().getFirstname()+" "+mSharedLocation.getUser().getLastname());
 
-        Long timeStamp = mSharedLocation.getTimeStamp().getTime();
+        Long timeStamp = mSharedLocation.getDate().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String ConvertedDate = simpleDateFormat.format(new Date(timeStamp));
         text_date.setText(ConvertedDate);

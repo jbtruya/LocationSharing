@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.locationsharing.MainActivity;
 import com.example.locationsharing.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -58,6 +61,7 @@ import java.util.Date;
 
 import Adapters.CommentsRecyclerAdapter;
 import Adapters.RecentSharedLocationRecyclerAdapter;
+import Helpers.FcmSendNewCommentNotification;
 import Models.Comment;
 import Models.Sharedlocation;
 import Models.User;
@@ -124,17 +128,9 @@ public class ViewSharedLocationFragment extends Fragment {
         // Initialize Bind Views
         initializeBindViews();
         // Populate Views With Data
-
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            mSharedLocation = bundle.getParcelable("Shared Location");
-            mUser = bundle.getParcelable("mUser");
-            populateViewsWithData();
-        }else{
-            Toast.makeText(getContext(), "INA MO", Toast.LENGTH_SHORT).show();
-        }
+        getDataFromBundle();
         // Get Comments
-        getSharedLocationComments();
+       // getSharedLocationComments();
 
         // initialize Dialog
         initializeDialog();
@@ -258,6 +254,24 @@ public class ViewSharedLocationFragment extends Fragment {
             }
         });
     }
+    private void getDataFromBundle(){
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            String dataFrom = bundle.getString("dataFrom");
+            if(dataFrom == null){
+                return;
+            }
+            switch (dataFrom){
+                case "Map":
+                case "NewComment":
+                    mSharedLocation = bundle.getParcelable("Shared Location");
+                    mUser = bundle.getParcelable("mUser");
+                    populateViewsWithData(mSharedLocation);
+                    getSharedLocationComments();
+                    break;
+            }
+        }
+    }
     private void initializeRecycler(){
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -330,11 +344,50 @@ public class ViewSharedLocationFragment extends Fragment {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getContext(), "Comment added!", Toast.LENGTH_SHORT).show();
+
+                        if(!mSharedLocation.getUser().getUid().equals(mAuth.getCurrentUser().getUid())){
+                            db.collection("User Information")
+                                    .document(mSharedLocation.getUser().getUid())
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            User userReceiver = documentSnapshot.toObject(User.class);
+
+                                            db.collection("User Information")
+                                                    .document(mAuth.getCurrentUser().getUid())
+                                                    .get()
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                            User userSender = documentSnapshot.toObject(User.class);
+                                                            String senderName = userSender.getFirstname()+" "+userSender.getLastname();
+                                                            int notificationId = (int) System.currentTimeMillis();
+
+                                                            FcmSendNewCommentNotification sendFcm = new FcmSendNewCommentNotification(
+                                                                    userReceiver.getFcmToken(),
+                                                                    senderName+" Commented",
+                                                                    comment,
+                                                                    mSharedLocation.getDocumentId(),
+                                                                    userReceiver.getUid(),
+                                                                    notificationId,
+                                                                    getContext(),
+                                                                    getActivity()
+                                                            );
+                                                            Log.d("testFcm", userReceiver.getFcmToken());
+                                                            Log.d("testFcm", ""+notificationId);
+                                                            sendFcm.sendNotification();
+                                                            sendFcm.createNotificationDocument();
+                                                        }
+                                                    });
+                                        }
+                                    });
+                        }
                     }
                 });
 
     }
-    private void populateViewsWithData(){
+    private void populateViewsWithData(Sharedlocation mSharedLocation){
         FirebaseUser user = mAuth.getCurrentUser();
         if(!mSharedLocation.getUser().getUid().equals(user.getUid())){
             image_edit.setVisibility(View.INVISIBLE);
@@ -354,18 +407,22 @@ public class ViewSharedLocationFragment extends Fragment {
         if(getActivity() != null){
             Glide.with(getContext()).load(mSharedLocation.getLocationPhoto()).into(image_shared_photo);
         }
-            Long timeStamp = mSharedLocation.getTimeStamp().getTime();
+        if(mSharedLocation.getDate() != null){
+            Long timeStamp = mSharedLocation.getDate().getTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             String ConvertedDate = simpleDateFormat.format(new Date(timeStamp));
+            text_date.setText(ConvertedDate);
+        }
+
 
             text_name.setText(mSharedLocation.getUser().getFirstname()+" "+mSharedLocation.getUser().getLastname());
             text_email.setText(mSharedLocation.getUser().getEmail());
-            text_date.setText(ConvertedDate);
-            text_coordinates.setText(mSharedLocation.getGeoPoint().getLatitude()+" "+mSharedLocation.getGeoPoint().getLongitude());
+            //text_coordinates.setText(mSharedLocation.getGeoPoint().getLatitude()+" "+mSharedLocation.getGeoPoint().getLongitude());
+            text_coordinates.setText("TEST");
             text_title.setText(mSharedLocation.getLocationTitle());
             text_description.setText(mSharedLocation.getLocationDescription());
 
-
+        text_date.setText("TEST");
     }
     private void populateViewsWithUpdatedData(){
         if (dialogUri != null) {
