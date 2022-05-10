@@ -279,6 +279,7 @@ public class ViewSharedLocationFragment extends Fragment {
         mCommentsRecyclerAdapter = new CommentsRecyclerAdapter(getContext(),mCommentArrayList, mUser);
         mRecyclerView.setAdapter(mCommentsRecyclerAdapter);
 
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
