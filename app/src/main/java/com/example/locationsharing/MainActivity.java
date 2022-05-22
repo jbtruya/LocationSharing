@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -124,10 +125,12 @@ public class MainActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             if(task.isSuccessful()){
                                                 User mUser  = task.getResult().toObject(User.class);
-
+                                                LatLng latLng = new LatLng(sharedlocation.getGeoPoint().getLatitude(), sharedlocation.getGeoPoint().getLongitude());
                                                 Intent mIntent = new Intent(MainActivity.this, LocationSharingActivity.class);
                                                 mIntent.putExtra("dataFrom", "NewComment");
                                                 mIntent.putExtra("Shared Location", sharedlocation);
+                                                mIntent.putExtra("date", sharedlocation.getDate());
+                                                mIntent.putExtra("latlng", latLng);
                                                 mIntent.putExtra("mUser", mUser);
 
                                                 progressDialog.dismiss();

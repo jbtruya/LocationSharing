@@ -67,5 +67,18 @@
                 tools:ignore="SpeakableTextPresentCheck,TextContrastCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/recycler_comments_image_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/dark_button"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_round_message_24"
+            tools:visibility="visible" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

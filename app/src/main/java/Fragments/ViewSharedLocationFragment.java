@@ -326,7 +326,7 @@ public class ViewSharedLocationFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mCommentsRecyclerAdapter = new CommentsRecyclerAdapter(getContext(),mCommentArrayList, mUser);
+        mCommentsRecyclerAdapter = new CommentsRecyclerAdapter(getContext(),getActivity(),mCommentArrayList, mUser);
         mRecyclerView.setAdapter(mCommentsRecyclerAdapter);
 
 
@@ -395,6 +395,7 @@ public class ViewSharedLocationFragment extends Fragment {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(getContext(), "Comment added!", Toast.LENGTH_SHORT).show();
+                        input_comment.getEditText().getText().clear();
 
                         if(!mSharedLocation.getUser().getUid().equals(mAuth.getCurrentUser().getUid())){
                             db.collection("User Information")
@@ -468,12 +469,32 @@ public class ViewSharedLocationFragment extends Fragment {
 
             text_name.setText(mSharedLocation.getUser().getFirstname()+" "+mSharedLocation.getUser().getLastname());
             text_email.setText(mSharedLocation.getUser().getEmail());
-            //text_coordinates.setText(mSharedLocation.getGeoPoint().getLatitude()+" "+mSharedLocation.getGeoPoint().getLongitude());
-            text_coordinates.setText("TEST");
+            text_coordinates.setText(mSharedLocation.getGeoPoint().getLatitude()+" "+mSharedLocation.getGeoPoint().getLongitude());
             text_title.setText(mSharedLocation.getLocationTitle());
             text_description.setText(mSharedLocation.getLocationDescription());
 
-        text_date.setText("TEST");
+            text_coordinates.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    db.collection("Shared Location")
+                            .document(mSharedLocation.getDocumentId())
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        Sharedlocation sharedlocation = task.getResult().toObject(Sharedlocation.class);
+
+                                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + sharedlocation.getGeoPoint().getLatitude() + "," + sharedlocation.getGeoPoint().getLongitude());
+                                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                        mapIntent.setPackage("com.google.android.apps.maps");
+                                        startActivity(mapIntent);
+
+                                    }else{
+                                    }
+                                }
+                            });
+                }
+            });
     }
     private void populateViewsWithUpdatedData(){
         if (dialogUri != null) {

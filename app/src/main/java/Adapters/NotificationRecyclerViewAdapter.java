@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import Models.Comment;
 import Models.Notification;
+import Models.Sharedlocation;
 import Models.User;
 
 public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<NotificationRecyclerViewAdapter.MyViewHolder> {
@@ -58,21 +59,6 @@ public class NotificationRecyclerViewAdapter extends RecyclerView.Adapter<Notifi
         holder.text_title.setText(notification.getNotificationTitle());
         holder.text_body.setText(notification.getNotificationBody());
 
-
-        db.collection("User Information")
-                .document(notification.getUserId())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isComplete()){
-                            User user = task.getResult().toObject(User.class);
-                            if(user.getAvatar() != null){
-                                Glide.with(mContext).load(user.getAvatar()).into(holder.image);
-                            }
-                        }
-                    }
-                });
     }
 
     @Override

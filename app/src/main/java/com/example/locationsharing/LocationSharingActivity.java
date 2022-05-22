@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -15,7 +16,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Date;
 
 import Fragments.ConversationFragment;
 import Fragments.MapFragment;
@@ -71,6 +75,12 @@ public class LocationSharingActivity extends AppCompatActivity {
                 case "NewComment":
                     Sharedlocation sharedlocation = bundle.getParcelable("Shared Location");
                     User mUser = bundle.getParcelable("mUser");
+                    Date date = (Date) bundle.get("date");
+                    LatLng latLng  = bundle.getParcelable("latlng");
+                    GeoPoint geoPoint = new GeoPoint(latLng.latitude, latLng.longitude);
+                    sharedlocation.setDate(date);
+                    sharedlocation.setGeoPoint(geoPoint);
+
                     loadViewSharedLocationFragment(sharedlocation,mUser);
                     break;
                 case "MessageNotification":

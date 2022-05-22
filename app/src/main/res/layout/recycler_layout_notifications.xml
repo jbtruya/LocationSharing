@@ -19,17 +19,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/notifLayout_imageView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="10dp"
+                android:tint="@color/dark_button_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/avatar_placeholder" />
+                app:srcCompat="@drawable/ic_sharp_notifications" />
 
             <TextView
                 android:id="@+id/notifLayout_text_title"
