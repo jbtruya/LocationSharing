@@ -36,11 +36,20 @@
         <entry key="..\:/Users/juliu/AndroidStudioProjects/LocationSharing/app/src/main/res/menu/bottom_nav_menu.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_map.xml" value="0.3175" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/drawable/ic_icon_registration.xml" value="0.3175" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/activity_chat.xml" value="0.3625" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/activity_location_sharing.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/activity_login_email.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/activity_sign_up.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/bottomsheet_layout_chat_sendimage.xml" value="0.3614583333333333" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_chat.xml" value="0.5" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_conversation.xml" value="0.3625" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_notification.xml" value="0.3625" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_share.xml" value="0.3625" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_user.xml" value="0.3625" />
-        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_view_shared_location.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_view_image.xml" value="0.3625" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/fragment_view_shared_location.xml" value="0.22" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_conversation.xml" value="0.5362095531587057" />
+        <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_message.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_notifications.xml" value="0.6886005560704356" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/layout/recycler_layout_recent_shared.xml" value="0.3625" />
         <entry key="..\:/Users/juliustruya/StudioProjects/LocationSharing/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3625" />

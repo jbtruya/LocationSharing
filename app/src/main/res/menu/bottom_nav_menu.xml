@@ -10,6 +10,10 @@
         android:icon="@drawable/ic_icon_create"
         android:title="@string/share" />
     <item
+        android:id="@+id/nav_conversation"
+        android:icon="@drawable/ic_round_message_24"
+        android:title="Conversation" />
+    <item
         android:id="@+id/nav_notification"
         android:icon="@drawable/ic_sharp_notifications"
         android:title="Notification" />

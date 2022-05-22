@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                             case "NewComment":
                                 FcmNotificationGetSharedLocationData(bundle.getString("documentId"));
                                 break;
+                            case "MessageNotification":
+                                FcmNotificationMessage();
+                                break;
                         }
                     }else{
                         loadLocationSharingActivity();
@@ -138,6 +141,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    private void FcmNotificationMessage(){
+        Intent mIntent = new Intent(MainActivity.this, LocationSharingActivity.class);
+        mIntent.putExtra("dataFrom", "MessageNotification");
+
+        finishAffinity();
+        startActivity(mIntent);
+        finish();
     }
     private void checkPermission(){
         Dexter.withContext(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {

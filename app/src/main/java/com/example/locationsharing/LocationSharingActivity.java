@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import Fragments.ConversationFragment;
 import Fragments.MapFragment;
 import Fragments.NotificationFragment;
 import Fragments.ShareFragment;
@@ -37,9 +38,11 @@ public class LocationSharingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_location_sharing);
         // Init Variables
         initializeVariables();
-        getDataFromBundle();
         // Bind Views;
         initializeBindViews();
+
+        getDataFromBundle();
+
         // Bottom Navigation Bar Functions
         bottomNavFunctions();
 
@@ -53,6 +56,7 @@ public class LocationSharingActivity extends AppCompatActivity {
 
         getFcmToken();
 
+        FirebaseMessaging.getInstance().subscribeToTopic(mAuth.getCurrentUser().getUid());
 
     }
     private void getDataFromBundle(){
@@ -69,6 +73,10 @@ public class LocationSharingActivity extends AppCompatActivity {
                     User mUser = bundle.getParcelable("mUser");
                     loadViewSharedLocationFragment(sharedlocation,mUser);
                     break;
+                case "MessageNotification":
+                    mBottomNav.setSelectedItemId(R.id.nav_conversation);
+                    loadConversationFragment();
+                    break;
             }
         }else{
           loadInitialFragment();
@@ -82,6 +90,20 @@ public class LocationSharingActivity extends AppCompatActivity {
         Fragment mFragment = new ViewSharedLocationFragment();
         mFragment.setArguments(mBundle);
 
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in,
+                        R.anim.slide_out,
+                        R.anim.slide_in,
+                        R.anim.slide_out
+                )
+                .replace(R.id.frame_main, mFragment)
+                .commit();
+    }
+    private void loadConversationFragment(){
+        Fragment mFragment = new ConversationFragment();
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -146,6 +168,10 @@ public class LocationSharingActivity extends AppCompatActivity {
                     case R.id.nav_share:
                         clearBackstack();
                         mFragment = new ShareFragment();
+                        break;
+                    case R.id.nav_conversation:
+                        clearBackstack();
+                        mFragment = new ConversationFragment();
                         break;
                     case R.id.nav_notification:
                         clearBackstack();

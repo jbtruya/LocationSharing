@@ -2,6 +2,7 @@ package Fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -23,11 +24,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.locationsharing.ChatActivity;
 import com.example.locationsharing.MainActivity;
 import com.example.locationsharing.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +42,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -63,6 +67,7 @@ import Adapters.CommentsRecyclerAdapter;
 import Adapters.RecentSharedLocationRecyclerAdapter;
 import Helpers.FcmSendNewCommentNotification;
 import Models.Comment;
+import Models.Conversation;
 import Models.Sharedlocation;
 import Models.User;
 
@@ -99,6 +104,7 @@ public class ViewSharedLocationFragment extends Fragment {
     private ImageView image_avatar;
     private ImageView image_edit;
     private ImageView image_comment_avatar;
+    private ImageView btn_sendMessage;
 
     private Uri dialogUri;
     private String dialogTitle;
@@ -244,6 +250,8 @@ public class ViewSharedLocationFragment extends Fragment {
         image_edit = mView.findViewById(R.id.view_shared_edit);
         image_comment_avatar = mView.findViewById(R.id.view_shared_comment_avatar);
 
+        btn_sendMessage = mView.findViewById(R.id.view_shared_image_message);
+
         mRecyclerView = mView.findViewById(R.id.view_shared_recyclerView);
 
         input_comment = mView.findViewById(R.id.view_shared_textField_comment);
@@ -253,6 +261,44 @@ public class ViewSharedLocationFragment extends Fragment {
                 createCommentDocument(input_comment.getEditText().getText().toString());
             }
         });
+
+        btn_sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadChatActivity();
+            }
+        });
+    }
+    private void loadChatActivity(){
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+
+       CollectionReference collectionReference = db.collection("Conversation");
+       
+        collectionReference.whereArrayContains("userId", mSharedLocation.getUser().getUid());
+        collectionReference.whereArrayContains("userId", mAuth.getCurrentUser().getUid());
+
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(!task.getResult().isEmpty()){
+                                intent.putExtra("userReceiverId", mSharedLocation.getUser().getUid());
+                                intent.putExtra("dataFrom", "ViewSharedLocation");
+                                startActivity(intent);
+                            }else{
+                               // Toast.makeText(getContext(), "EMPTY", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("userReceiverId", mSharedLocation.getUser().getUid());
+                                intent.putExtra("dataFrom", "ViewSharedLocation");
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
     private void getDataFromBundle(){
         Bundle bundle = getArguments();
@@ -268,6 +314,10 @@ public class ViewSharedLocationFragment extends Fragment {
                     mUser = bundle.getParcelable("mUser");
                     populateViewsWithData(mSharedLocation);
                     getSharedLocationComments();
+
+                    if(mAuth.getCurrentUser().getUid().equals(mSharedLocation.getUser().getUid())){
+                        btn_sendMessage.setVisibility(View.GONE);
+                    }
                     break;
             }
         }
